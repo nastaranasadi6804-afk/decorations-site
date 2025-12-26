@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مشاور رنگ دکوراسیون</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+  }
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 20px;
+    padding: 30px 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  }
+  h2 { margin-top:0; font-weight: 600; color: #111827; }
+  label { display:block; margin:12px 0 6px; font-weight: 500; }
+  input, select, button {
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size: 15px;
+    outline:none;
+  }
+  button {
+    margin-top:15px;
+    background:#4f46e5;
+    color:#fff;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  button:hover { background:#4338ca; }
+  .palette { display:flex; gap:12px; margin-top:15px; }
+  .color { flex:1; height:100px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:500; font-size:14px; }
+  .color small { font-weight: normal; opacity:0.8; }
+  .tip { margin-top:10px; background:#eef2ff; border-left:4px solid #4f46e5; padding:10px; border-radius:8px; font-size:13px; }
+  @media(max-width:1000px){ .container{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="card" style="background:#eef2ff">
+    <h2>🎨 سبک‌ها</h2>
+    <div class="tip" style="border-left-color:#6366f1">مدرن: خطوط ساده، رنگ خنثی، مینیمال</div>
+    <div class="tip" style="border-left-color:#8b5cf6">مینیمال: خلوت و آرام</div>
+    <div class="tip" style="border-left-color:#ec4899">کلاسیک: گرم و لوکس</div>
+    <div class="tip" style="border-left-color:#f43f5e">بوهو: طبیعی و آزاد</div>
+    <div class="tip" style="border-left-color:#22c55e">صنعتی: طوسی و فلز</div>
+    <div class="tip" style="border-left-color:#3b82f6">اسکاندیناوی: روشن و چوبی</div>
+    <div class="tip" style="border-left-color:#f59e0b">مدیترانه‌ای: آبی و سفید</div>
+    <div class="tip" style="border-left-color:#a855f7">لوکس مدرن: تیره و طلایی</div>
+  </div>
+
+  <div class="card" style="background:#fff7ed">
+    <h2>⚙️ تنظیمات</h2>
+    <label>رنگ پایه</label>
+    <input type="color" id="baseColor" value="#6366f1">
+
+    <label>سبک</label>
+    <select id="style">
+      <option value="modern">مدرن</option>
+      <option value="minimal">مینیمال</option>
+      <option value="classic">کلاسیک</option>
+      <option value="boho">بوهو</option>
+      <option value="industrial">صنعتی</option>
+      <option value="scandinavian">اسکاندیناوی</option>
+      <option value="mediterranean">مدیترانه‌ای</option>
+      <option value="luxury">لوکس مدرن</option>
+    </select>
+
+    <button id="btn">💡 دریافت پالت</button>
+  </div>
+
+  <div class="card" style="background:#f0fdf4">
+    <h2>📊 پیشنهادها</h2>
+    <div id="result">رنگ و سبک را انتخاب کنید</div>
+  </div>
+
+</div>
+
+<script>
+const palettes = {
+  modern:['#ffffff','#6366f1','#a5b4fc'],
+  minimal:['#ffffff','#e5e7eb','#9ca3af'],
+  classic:['#fef3c7','#fcd34d','#f87171'],
+  boho:['#fdf2f8','#ec4899','#f97316'],
+  industrial:['#f3f4f6','#6b7280','#1f2937'],
+  scandinavian:['#ffffff','#dbeafe','#3b82f6'],
+  mediterranean:['#ffffff','#60a5fa','#facc15'],
+  luxury:['#1f2937','#d4af37','#a855f7']
+};
+
+const names={
+'#ffffff':'سفید','#6366f1':'آبی روشن','#a5b4fc':'آبی ملایم','#e5e7eb':'طوسی روشن','#9ca3af':'طوسی متوسط',
+'#fef3c7':'کرم','#fcd34d':'زرد','#f87171':'قرمز','#fdf2f8':'کرم صورتی','#ec4899':'صورتی','#f97316':'نارنجی',
+'#f3f4f6':'خاکستری','#6b7280':'طوسی صنعتی','#1f2937':'مشکی','#dbeafe':'آبی روشن','#3b82f6':'آبی اسکاندیناوی',
+'#60a5fa':'آبی مدیترانه','#facc15':'زرد آفتابی','#1f2937':'مشکی لوکس','#d4af37':'طلایی','#a855f7':'بنفش'
+};
+
+const tips={
+  modern:'ساده و مینیمال، استفاده از رنگ‌های خنثی و خطوط صاف',
+  minimal:'کمترین عناصر، تمرکز روی فضا و نور',
+  classic:'گرم و لوکس با رنگ‌های طلایی و چوبی',
+  boho:'طبیعی و آزاد با رنگ‌های گرم و متنوع',
+  industrial:'طوسی، فلز و ظاهر خام',
+  scandinavian:'روشن، آرامش‌بخش و چوبی',
+  mediterranean:'آبی و سفید الهام گرفته از دریا',
+  luxury:'تیره و جذاب با جزئیات طلایی'
+};
+
+document.getElementById('btn').onclick=function(){
+  const base=document.getElementById('baseColor').value;
+  const style=document.getElementById('style').value;
+  const colors=[base].concat(palettes[style]);
+  let html='<div class="palette">';
+  colors.forEach(c=>{
+    html+='<div class="color" style="background:'+c+'; color:'+(c==='#ffffff'?'#000':'#fff')+'">'
+         +'<div>'+(names[c]||'انتخابی')+'</div>'
+         +'<small>'+c+'</small></div>';
+  });
+  html+='</div>';
+  html+='<div class="tip">🏠 رنگ اول: دیوار | رنگ دوم: کف | رنگ سوم: اکسسوری</div>';
+  html+='<div class="tip">🎯 بیش از ۳ رنگ اصلی استفاده نکنید</div>';
+  html+='<div class="tip">💾 می‌توانید پالت را ذخیره یا برای هر اتاق جداگانه استفاده کنید</div>';
+  html+='<div class="tip">💡 '+tips[style]+'</div>';
+  document.getElementById('result').innerHTML=html;
+};
+</script>
+
+</body>
+</html>
